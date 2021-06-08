@@ -241,7 +241,7 @@ MeasureString (GpGraphics *graphics, GDIPCONST WCHAR *stringUnicode, int *length
 		}
 	}
 
-	cairo_font_options_set_antialias(FontOptions, CAIRO_ANTIALIAS_NONE);
+	cairo_font_options_set_antialias(FontOptions, CAIRO_ANTIALIAS_GRAY);
 	cairo_font_options_set_hint_style(FontOptions, CAIRO_HINT_STYLE_NONE);
 	cairo_font_options_set_hint_metrics(FontOptions, CAIRO_HINT_METRICS_OFF);
 	((mycairo_font_options*)FontOptions)->round_glyph_positions = CAIRO_ROUND_GLYPH_POS_OFF;
