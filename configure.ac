@@ -37,7 +37,7 @@ CAIRO_REQUIRED_VERSION="1.6.4"
 PKG_CHECK_MODULES(CAIRO, cairo >= $CAIRO_REQUIRED_VERSION)
 
 # Optional use of Pango's text rendering on top of Cairo
-AC_ARG_WITH(pango, [  --with-pango            use Pango to measure and draw text],[text_v=pango],[text_v=default])
+#AC_ARG_WITH(pango, [  --with-pango            use Pango to measure and draw text],[text_v=pango],[text_v=default])
 
 GDIPLUS_CFLAGS="$GDIPLUS_CFLAGS -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare -std=gnu11"
 
@@ -66,22 +66,23 @@ CAIRO_CFLAGS="`$PKG_CONFIG --cflags cairo `"
 cairo_info="`$PKG_CONFIG --modversion cairo ` (system)"
 GDIPLUS_PKG_REQ="cairo"
 
-PANGO_REQUIRED_VERSION="1.40.14"
-if test $text_v = "pango"; then
-  PKG_CHECK_MODULES(PANGO, pango >= $PANGO_REQUIRED_VERSION)
-fi
-if test $text_v = "default"; then
-  PKG_CHECK_MODULES(PANGO, pango >= $PANGO_REQUIRED_VERSION,
-	  [text_v=pango], [text_v=cairo])
-fi
-if test $text_v = "pango"; then
-	PANGO_LIBS="`$PKG_CONFIG --libs pangocairo `"
-	PANGO_CFLAGS="`$PKG_CONFIG --cflags pangocairo `"
-	AC_DEFINE(USE_PANGO_RENDERING,1,[Use Pango to measure and draw text])
-	GDIPLUS_PKG_REQ="$GDIPLUS_PKG_REQ pangocairo-1.0"
-fi
+#PANGO_REQUIRED_VERSION="1.40.14"
+#if test $text_v = "pango"; then
+#  PKG_CHECK_MODULES(PANGO, pango >= $PANGO_REQUIRED_VERSION)
+#fi
+#if test $text_v = "default"; then
+#  PKG_CHECK_MODULES(PANGO, pango >= $PANGO_REQUIRED_VERSION,
+#	  [text_v=pango], [text_v=cairo])
+#fi
+#if test $text_v = "pango"; then
+#	PANGO_LIBS="`$PKG_CONFIG --libs pangocairo `"
+#	PANGO_CFLAGS="`$PKG_CONFIG --cflags pangocairo `"
+#	AC_DEFINE(USE_PANGO_RENDERING,1,[Use Pango to measure and draw text])
+#	GDIPLUS_PKG_REQ="$GDIPLUS_PKG_REQ pangocairo-1.0"
+#fi
 
-AM_CONDITIONAL(USE_PANGO_RENDERING, [test $text_v = "pango"])
+#AM_CONDITIONAL(USE_PANGO_RENDERING, [test $text_v = "pango"])
+#AM_CONDITIONAL(USE_PANGO_RENDERING, [false])
 
 GDIPLUS_LIBS="$GDIPLUS_LIBS $CAIRO_LIBS $PANGO_LIBS"
 GDIPLUS_CFLAGS="$GDIPLUS_CFLAGS $CAIRO_CFLAGS $PANGO_CFLAGS"
