@@ -24,6 +24,7 @@
 
 #ifdef USE_PANGO_RENDERING
 
+#include "text-cairo-private.h"
 #include "text-pango-private.h"
 #include "graphics-private.h"
 #include "graphics-cairo-private.h"
@@ -31,6 +32,31 @@
 #include "font-private.h"
 #include "fontfamily-private.h"
 #include "fontcollection-private.h"
+
+typedef enum _cairo_lcd_filter {
+	CAIRO_LCD_FILTER_DEFAULT,
+	CAIRO_LCD_FILTER_NONE,
+	CAIRO_LCD_FILTER_INTRA_PIXEL,
+	CAIRO_LCD_FILTER_FIR3,
+	CAIRO_LCD_FILTER_FIR5
+} cairo_lcd_filter_t;
+
+typedef enum _cairo_round_glyph_positions {
+	CAIRO_ROUND_GLYPH_POS_DEFAULT,
+	CAIRO_ROUND_GLYPH_POS_ON,
+	CAIRO_ROUND_GLYPH_POS_OFF
+} cairo_round_glyph_positions_t;
+
+typedef struct {
+	cairo_antialias_t antialias;
+	cairo_subpixel_order_t subpixel_order;
+	cairo_lcd_filter_t lcd_filter;
+	cairo_hint_style_t hint_style;
+	cairo_hint_metrics_t hint_metrics;
+	cairo_round_glyph_positions_t round_glyph_positions;
+	char* variations;
+} mycairo_font_options;
+
 
 int
 utf8_length_for_utf16_string (GDIPCONST WCHAR *stringUnicode, int offset, int length)
@@ -569,7 +595,18 @@ pango_MeasureString (GpGraphics *graphics, GDIPCONST WCHAR *stringUnicode, INT l
 	PangoRectangle logical;
 	PangoLayoutIter *iter;
 	PointF box_offset;
-	int *charsRemoved = NULL;
+	int *charsRemoved = NULL;	
+	cairo_font_options_t* FontOptions;
+
+	FontOptions = cairo_font_options_create();
+
+	cairo_font_options_set_antialias(FontOptions, CAIRO_ANTIALIAS_GRAY);
+	cairo_font_options_set_hint_style(FontOptions, CAIRO_HINT_STYLE_NONE);
+	cairo_font_options_set_hint_metrics(FontOptions, CAIRO_HINT_METRICS_OFF);
+	((mycairo_font_options*)FontOptions)->round_glyph_positions = CAIRO_ROUND_GLYPH_POS_OFF;
+
+	cairo_set_font_options(graphics->ct, FontOptions);
+	cairo_font_options_destroy(FontOptions);
 
 	cairo_save (graphics->ct);
 
