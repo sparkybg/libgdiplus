@@ -480,16 +480,16 @@ gdip_pango_setup_layout (cairo_t *cr, GDIPCONST WCHAR *stringUnicode, int length
 
 	if ((fmt->formatFlags & StringFormatFlagsNoFitBlackBox) == 0) {
 		/* By default don't allow overhang - ink space may be larger than logical space */
-		box->X = logical.x; //min (ink.x, logical.x);
-		box->Y = logical.y; //min(ink.y, logical.y);
-		box->Height = logical.height;// max(ink.height, logical.height);
-		box->Width = logical.width;// max(ink.width, logical.width);
+		box->X = ink.x; //min (ink.x, logical.x);
+		box->Y = ink.y; //min(ink.y, logical.y);
+		box->Height = ink.height;// max(ink.height, logical.height);
+		box->Width = ink.width;// max(ink.width, logical.width);
 	} else {
 		/* Allow overhang */
-		box->X = logical.x;
-		box->Y = logical.y;
-		box->Height = logical.height;
-		box->Width = logical.width;
+		box->X = ink.x;
+		box->Y = ink.y;
+		box->Height = ink.height;
+		box->Width = ink.width;
 	}
 	//g_warning ("\tbox\t[x %g, y %g, w %g, h %g]", box->X, box->Y, box->Width, box->Height);
 
