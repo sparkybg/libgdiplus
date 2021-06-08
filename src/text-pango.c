@@ -474,7 +474,8 @@ gdip_pango_setup_layout (cairo_t *cr, GDIPCONST WCHAR *stringUnicode, int length
 		pango_layout_iter_free (iter);
 	}
 
-	pango_layout_get_pixel_extents (layout, &ink, &logical);
+	//pango_layout_get_pixel_extents (layout, &ink, &logical); //sparkybg
+	pango_layout_get_extents (layout, &ink, &logical); //sparkybg
 	//g_warning ("\tlogical\t[x %d, y %d, w %d, h %d][x %d, y %d, w %d, h %d]", logical.x, logical.y, logical.width, logical.height, ink.x, ink.y, ink.width, ink.height);
 
 	if ((fmt->formatFlags & StringFormatFlagsNoFitBlackBox) == 0) {
@@ -491,6 +492,12 @@ gdip_pango_setup_layout (cairo_t *cr, GDIPCONST WCHAR *stringUnicode, int length
 		box->Width = logical.width;
 	}
 	//g_warning ("\tbox\t[x %g, y %g, w %g, h %g]", box->X, box->Y, box->Width, box->Height);
+
+	box->X /= PANGO_SCALE; //sparkybg
+	box->Y /= PANGO_SCALE; //sparkybg
+	box->Width /= PANGO_SCALE; //sparkybg
+	box->Height /= PANGO_SCALE; //sparkybg
+
 
 	box_offset->X = 0;
 	box_offset->Y = 0;
