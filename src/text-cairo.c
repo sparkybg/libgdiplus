@@ -241,8 +241,6 @@ MeasureString (GpGraphics *graphics, GDIPCONST WCHAR *stringUnicode, int *length
 		}
 	}
 
-	printf("libgdiplus_cairo_set_font_options\n");
-
 	cairo_font_options_set_antialias(FontOptions, CAIRO_ANTIALIAS_NONE);
 	cairo_font_options_set_hint_style(FontOptions, CAIRO_HINT_STYLE_NONE);
 	cairo_font_options_set_hint_metrics(FontOptions, CAIRO_HINT_METRICS_OFF);
